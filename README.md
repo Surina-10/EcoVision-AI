@@ -29,6 +29,13 @@ I noticed that people around me, including my own family, often hesitated in fro
 - [ml5.js](https://ml5js.org/) v0.12.2 for MobileNet feature extraction and transfer learning
 - JavaScript, HTML, CSS
 
+## Project structure
+
+- `index.html` loads p5.js and ml5.js (v0.12.2) from a CDN and runs the sketch
+- `sketch.js` contains all the app logic: webcam capture, training, classification, and the UI
+- `style.css` handles basic page styling
+- `versions/` holds earlier versions of the project (see Development history below)
+
 ## Running it
 
 **Easiest:** open the project in the [p5.js Web Editor](https://editor.p5js.org/) [add your sketch link here] and click Play. Allow camera access when asked.
@@ -49,6 +56,16 @@ Then open `http://localhost:8000`.
 4. Optionally click **💾 Save Model** to download your trained model, or **📂 Load Model** to use one you saved earlier.
 5. Switch back to **🏠 Classifier Mode**, hold an item close to the camera, and click or press Enter.
 
+## Development history
+
+EcoVision AI went through three versions, each using a different approach to machine learning. Earlier versions are in the [`versions`](versions/) folder.
+
+- **[v1: Teachable Machine](versions/v1-teachable-machine/)**: My first version used an image classification model I trained in Google's Teachable Machine and loaded into p5.js with ml5. It sorted items into categories like glass, metal, plastic, paper/cardboard, organic waste, and textiles, and showed whether each was recyclable (♻️), needed checking (⚠️), or didn't belong in the blue bin (❌). It worked, but its accuracy was limited by the small number of training images I could collect myself.
+
+- **[v2: Roboflow object detection](versions/v2-roboflow-detection/)**: To improve accuracy, I switched to an object detection model trained on a larger public waste dataset, hosted on Roboflow. Each webcam frame was sent to Roboflow's API, and the app picked the highest-confidence detection. This taught me how to work with web APIs, send images as base64 data, and handle network errors. However, it depended on an internet connection and an external service, and I couldn't easily retrain it for the items people around me actually throw away.
+
+- **Current version: in-browser training**: The version in the main folder brings everything back into the browser. Using ml5's feature extractor with MobileNet, anyone can train the model on their own items in a few minutes, save it, and reload it later, with no external service needed. I also added an "unknown" class and a confidence threshold so the app admits when it isn't sure.
+
 ## Challenges and what I learned
 
 - **Only two categories ever showed up.** After training on all five materials, the model kept predicting just plastic or paper, no matter what I held up. I eventually found that ml5's feature extractor defaults to only 2 output labels. Setting `numLabels` to match my 5 categories fixed it. This taught me to read library documentation closely instead of assuming the defaults fit my project.
@@ -63,7 +80,7 @@ Then open `http://localhost:8000`.
 
 ## Future improvements
 
-- Add more categories, such as glass and compost
+- Add more categories, such as glass and compost, which earlier versions supported
 - Build a larger, more varied training dataset to improve accuracy in different lighting
 - Add disposal guides for every material, not just plastic and paper
 - Make the layout mobile-friendly so it can be used on a phone at the bin

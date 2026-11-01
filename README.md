@@ -38,7 +38,7 @@ I noticed that people around me, including my own family, often hesitated in fro
 
 ## Running it
 
-**Easiest:** open the project in the [p5.js Web Editor](https://editor.p5js.org/) [add your sketch link here] and click Play. Allow camera access when asked.
+**Easiest:** open the project in the [p5.js Web Editor](https://editor.p5js.org/sy10/full/iS9PBk4bj). Allow camera access when asked.
 
 **Locally:** clone this repo and serve the folder with a local server (webcam access requires `localhost` or HTTPS), for example:
 
